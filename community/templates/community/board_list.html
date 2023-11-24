@@ -1,0 +1,128 @@
+{% load commuity_filter %} 
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="upgrade-insecure-requests"
+        />
+        <link rel="stylesheet" href="{% static 'css/board.css' %}" />
+    </head>
+    <body>
+        <section class="notice">
+            <div class="page-title">
+                <div class="container">
+                    <h3>공지사항</h3>
+                </div>
+            </div>
+
+            <!-- board seach area -->
+            <div id="board-search">
+                <div class="container">
+                    <div class="search-window">
+                        <form action="">
+                            <div class="search-wrap">
+                                <label for="search" class="blind"
+                                    >공지사항 내용 검색</label
+                                >
+                                <input
+                                    id="search"
+                                    type="search"
+                                    name=""
+                                    placeholder="검색어를 입력해주세요."
+                                    value=""
+                                />
+                                <button type="submit" class="btn btn-dark">
+                                    검색
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- board list area -->
+            <div id="board-list">
+                <div class="container">
+                    <table class="board-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="th-num">번호</th>
+                                <th scope="col" class="th-date">작성자</th>
+                                <th scope="col" class="th-title">제목</th>
+                                <th scope="col" class="th-date">등록일</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if boards %} 
+                                {% for board in boards %}
+                                    <tr>
+                                        <td class="tac">{{ board.pk_board }}</td>
+                                        <td class="tac">{{ board.strName }}</td>
+                                        <td>
+                                            <a href="{% url 'app:board_detail' board.pk_board %}">{{ board.strBoardTitle }}</a>
+                                        </td>
+                                        <td class="tac">
+                                            {{ board.putdatetime|date:'Y-m-d' }}
+                                        </td>
+                                        <td>
+                                            <!--{{ boards.paginator.count|sub:boards.start_index|sub:forloop.counter0|add:1 }}-->
+                                        </td>
+                                    </tr>
+                                {% endfor %} 
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">게시글이 없습니다.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <ul class="pagination justify-content-center">
+                        <!-- 이전페이지 -->
+                        {% if boards.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ boards.previous_page_number }}">이전</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+                            </li>
+                        {% endif %}
+                    
+                        <!-- 페이지리스트 -->
+                        {% for page_number in boards.paginator.page_range %}
+                            {% if page_number >= boards.number|add:-5 and page_number <= boards.number|add:5 %} 
+                                {% if page_number == boards.number %}
+                                    <li class="page-item active" aria-current="page">
+                                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                                    </li>
+                                {% endif %} 
+                            {% endif %} 
+                        {% endfor %}
+                    
+                        <!-- 다음페이지 -->
+                        {% if boards.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ boards.next_page_number }}">다음</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                            </li>
+                        {% endif %}
+                    </ul>                    
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

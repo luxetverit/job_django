@@ -1,0 +1,35 @@
+{% load commuity_filter %} 
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="upgrade-insecure-requests"
+        />
+        <link rel="stylesheet" href="{% static 'css/board_detail.css' %}" />
+    </head>
+    <body>
+        <div id="board-detail">
+            <div class="container">
+                <div class="page-title">
+                    <h3>{{ posts.strBoardTitle}}</h3>
+                </div>
+                <div class="post-content">
+                    <p>{{ posts.strBoardContents}}</p>
+                </div>
+                <div class="post-info">
+                    <span class="date">{{ posts.putdatetime}}</span>
+                </div>
+                <div class="post-actions">
+                    <button class="btn btn-dark" onclick="editPost()">Edit</button>
+                    <button class="btn btn-dark" onclick="deletePost()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
